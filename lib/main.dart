@@ -9,39 +9,53 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'miremo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'miremo'),
+      theme: ThemeData(scaffoldBackgroundColor: const Color(0xFF343A40)),
+      home: HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-          ],
-        ),
-      ),
+          mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 120, 0, 0),
+                height: 120,
+                width: 120,
+                child: FittedBox(
+                  child: Image.network(
+                      'https://us-central1-miremo.cloudfunctions.net/app/icon/player?minecraft_id=kit130101',
+                      fit: BoxFit.contain),
+                )
+              ),
+              Container(
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Text('池田海斗',
+                      style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 5)
+                  )
+              ),
+              Container(
+                  margin: EdgeInsets.fromLTRB(0, 4, 0, 0),
+                  child: Text('kit130101',
+                      style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2)
+                  )
+              )
+          ]
+        )
+      )
     );
   }
 }

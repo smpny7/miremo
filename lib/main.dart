@@ -1,6 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:miremo/main_model.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -10,52 +15,62 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'miremo',
       theme: ThemeData(scaffoldBackgroundColor: const Color(0xFF343A40)),
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 120, 0, 0),
-                height: 120,
-                width: 120,
-                child: FittedBox(
-                  child: Image.network(
-                      'https://us-central1-miremo.cloudfunctions.net/app/icon/player?minecraft_id=kit130101',
-                      fit: BoxFit.contain),
-                )
+      home: ChangeNotifierProvider<MainModel>(
+        create: (_) => MainModel()..getServers(),
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Color(0xFF343A40),
+            elevation: 0,
+            toolbarHeight: 80,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  child: Text(
+                    'player',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2),
+                  ),
+                ),
+                Container(
+                  height: 48,
+                  width: 48,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: FittedBox(
+                      child: Image.network(
+                          'https://us-central1-miremo.cloudfunctions.net/app/icon/player?minecraft_id=kit130101',
+                          fit: BoxFit.contain),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          body: Center(
+            child: Container(
+              child: Consumer<MainModel>(
+                builder: (context, model, child) {
+                  final serverList = model.serverList;
+                  return ListView(
+                    children: serverList
+                        .map(
+                          (server) => ListTile(
+                            title: Text(server.title),
+                          ),
+                        )
+                        .toList(),
+                  );
+                },
               ),
-              Container(
-                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: Text('池田海斗',
-                      style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 5)
-                  )
-              ),
-              Container(
-                  margin: EdgeInsets.fromLTRB(0, 4, 0, 0),
-                  child: Text('kit130101',
-                      style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2)
-                  )
-              )
-          ]
-        )
-      )
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

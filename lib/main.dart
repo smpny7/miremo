@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:miremo/main_model.dart';
+import 'package:miremo/serverCard.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -26,12 +27,12 @@ class MyApp extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
                   child: Text(
-                    'player',
+                    'kit130101',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 2),
                   ),
@@ -53,16 +54,17 @@ class MyApp extends StatelessWidget {
           ),
           body: Center(
             child: Container(
+              margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
               child: Consumer<MainModel>(
                 builder: (context, model, child) {
                   final serverList = model.serverList;
                   return ListView(
                     children: serverList
-                        .map(
-                          (server) => ListTile(
-                            title: Text(server.title),
-                          ),
-                        )
+                        .map((server) => ServerCard(
+                            server.title,
+                            server.iconUrl,
+                            server.onlineMembers,
+                            server.capacityMembers))
                         .toList(),
                   );
                 },

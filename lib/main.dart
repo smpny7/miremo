@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
         create: (_) => MainModel()..getServers(),
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: Color(0xFF343A40),
             elevation: 0,
             toolbarHeight: 80,
@@ -66,72 +67,81 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Consumer<MainModel>(
                 builder: (context, model, child) {
                   final serverList = model.serverList;
-                  return ListView(
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          ListView(
-                            children: serverList
-                                .map((server) => ServerCard(
-                                    server.title,
-                                    server.iconUrl,
-                                    server.onlineMembers,
-                                    server.capacityMembers))
-                                .toList(),
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                          ),
-                        ],
-                      ),
-                      Container(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 50,
-                            width: 175,
-                            child: ElevatedButton(
-                              child: Text(
-                                'サーバーを追加',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13,
-                                    letterSpacing: 2),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                primary: HexColor('76A3D1'),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              onPressed: () {
-                                pushWithReloadByReturn(context);
-                              },
+                  return RefreshIndicator(
+                    backgroundColor: HexColor('505962'),
+                    color: HexColor('76A3D1'),
+                    onRefresh: () async {
+                      Provider.of<MainModel>(context, listen: false)
+                          .getServers();
+                    },
+                    child: ListView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            ListView(
+                              children: serverList
+                                  .map((server) => ServerCard(
+                                      server.title,
+                                      server.iconUrl,
+                                      server.onlineMembers,
+                                      server.capacityMembers))
+                                  .toList(),
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                             ),
-                          ),
-                          SizedBox(
-                            height: 50,
-                            width: 175,
-                            child: ElevatedButton(
-                              child: Text(
-                                '編集',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13,
-                                    letterSpacing: 3),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                primary: HexColor('505962'),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                          ],
+                        ),
+                        Container(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 50,
+                              width: 175,
+                              child: ElevatedButton(
+                                child: Text(
+                                  'サーバーを追加',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                      letterSpacing: 2),
                                 ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: HexColor('76A3D1'),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  pushWithReloadByReturn(context);
+                                },
                               ),
-                              onPressed: () {},
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            SizedBox(
+                              height: 50,
+                              width: 175,
+                              child: ElevatedButton(
+                                child: Text(
+                                  '編集',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                      letterSpacing: 3),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: HexColor('505962'),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: () {},
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),

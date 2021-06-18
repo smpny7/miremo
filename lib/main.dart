@@ -4,6 +4,8 @@ import 'package:miremo/main_model.dart';
 import 'package:miremo/serverCard.dart';
 import 'package:provider/provider.dart';
 
+import 'hexColor.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -54,18 +56,76 @@ class MyApp extends StatelessWidget {
           ),
           body: Center(
             child: Container(
-              margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
+              margin: EdgeInsets.fromLTRB(30, 50, 30, 0),
               child: Consumer<MainModel>(
                 builder: (context, model, child) {
                   final serverList = model.serverList;
                   return ListView(
-                    children: serverList
-                        .map((server) => ServerCard(
-                            server.title,
-                            server.iconUrl,
-                            server.onlineMembers,
-                            server.capacityMembers))
-                        .toList(),
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          ListView(
+                            children: serverList
+                                .map((server) => ServerCard(
+                                    server.title,
+                                    server.iconUrl,
+                                    server.onlineMembers,
+                                    server.capacityMembers))
+                                .toList(),
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                          ),
+                        ],
+                      ),
+                      Container(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 50,
+                            width: 175,
+                            child: ElevatedButton(
+                              child: Text(
+                                'サーバーを追加',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    letterSpacing: 2
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: HexColor('76A3D1'),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                          SizedBox(
+                            height: 50,
+                            width: 175,
+                            child: ElevatedButton(
+                              child: Text(
+                                '編集',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                  letterSpacing: 3
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: HexColor('505962'),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   );
                 },
               ),

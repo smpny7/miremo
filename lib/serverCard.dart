@@ -14,7 +14,7 @@ class ServerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
+      margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
       child: RaisedButton(
         color: Color(0xFF505962),
         child: Container(
@@ -42,7 +42,7 @@ class ServerCard extends StatelessWidget {
                       letterSpacing: 2),
                 ),
                 subtitle: Text(
-                  'オンライン: ${_onlineMembers ?? 'NULL'} / ${_capacityMembers ?? 'NULL'}',
+                  'オンライン: ${_onlineMembers ?? '-'} / ${_capacityMembers ?? '-'}',
                   style: TextStyle(
                       color: Color(0xFFD3D3D3),
                       fontSize: 11,

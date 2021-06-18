@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'enter_icon_icons.dart';
-
 class ServerCard extends StatelessWidget {
   final String _title;
   final String _iconUrl;
@@ -29,12 +27,14 @@ class ServerCard extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: FittedBox(
-                      child: Image.network(_iconUrl, fit: BoxFit.contain),
+                      child: _iconUrl != null
+                          ? Image.network(_iconUrl, fit: BoxFit.contain)
+                          : Image.asset('assets/default.jpg'),
                     ),
                   ),
                 ),
                 title: Text(
-                  _title ?? 'NULL',
+                  _title ?? 'Minecraftサーバー',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -49,11 +49,11 @@ class ServerCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       letterSpacing: 2),
                 ),
-                trailing: IconButton(
-                    color: Colors.white70,
-                    icon: Icon(EnterIcon.enter),
-                    onPressed: () {},
-                    iconSize: 34),
+                // trailing: IconButton(
+                //     color: Colors.white70,
+                //     icon: _iconUrl != null ? Icon(EnterIcon.enter) : Icon(null),
+                //     onPressed: () {},
+                //     iconSize: 34),
               ),
             ],
           ),

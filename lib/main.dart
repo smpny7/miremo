@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:miremo/main_model.dart';
+import 'package:miremo/registerModal.dart';
 import 'package:miremo/serverCard.dart';
 import 'package:provider/provider.dart';
 
@@ -9,10 +10,15 @@ import 'hexColor.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(HomeScreen());
 }
 
-class MyApp extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -90,8 +96,7 @@ class MyApp extends StatelessWidget {
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 13,
-                                    letterSpacing: 2
-                                ),
+                                    letterSpacing: 2),
                               ),
                               style: ElevatedButton.styleFrom(
                                 primary: HexColor('76A3D1'),
@@ -99,7 +104,9 @@ class MyApp extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                pushWithReloadByReturn(context);
+                              },
                             ),
                           ),
                           SizedBox(
@@ -109,10 +116,9 @@ class MyApp extends StatelessWidget {
                               child: Text(
                                 '編集',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                  letterSpacing: 3
-                                ),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    letterSpacing: 3),
                               ),
                               style: ElevatedButton.styleFrom(
                                 primary: HexColor('505962'),
@@ -134,5 +140,17 @@ class MyApp extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void pushWithReloadByReturn(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      new MaterialPageRoute<bool>(
+        builder: (BuildContext context) => RegisterModalScreen(),
+        fullscreenDialog: true,
+      ),
+    );
+
+    if (result) Provider.of<MainModel>(context, listen: false).getServers();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:miremo/detail.dart';
 import 'package:miremo/registerModal.dart';
 import 'package:provider/provider.dart';
 
@@ -88,7 +89,14 @@ class _ServerCardScreenState extends State<ServerCardScreen> {
             Radius.circular(10),
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          if (widget._documentID != null && !widget._isEditable)
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailScreen(
+                        widget._title, widget._address, widget._port)));
+        },
       ),
     );
   }
@@ -103,6 +111,7 @@ class _ServerCardScreenState extends State<ServerCardScreen> {
       ),
     );
 
-    if (result != null) Provider.of<MainModel>(context, listen: false).getServers();
+    if (result != null)
+      Provider.of<MainModel>(context, listen: false).getServers();
   }
 }

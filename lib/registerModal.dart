@@ -245,50 +245,50 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
                 children: <Widget>[
                   Expanded(
                     child: SizedBox(
-                    height: 50,
-                    width: 140,
-                    child: ElevatedButton(
-                      child: Text(
-                        widget._documentID == null ? '作成' : '保存',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                            letterSpacing: 3),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: HexColor('76A3D1'),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                      height: 50,
+                      width: 140,
+                      child: ElevatedButton(
+                        child: Text(
+                          widget._documentID == null ? '作成' : '保存',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              letterSpacing: 3),
                         ),
+                        style: ElevatedButton.styleFrom(
+                          primary: HexColor('76A3D1'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: (!(widget._title != null &&
+                                    widget._title.isNotEmpty) ||
+                                !(widget._address != null &&
+                                    widget._address.isNotEmpty) ||
+                                widget._port == null)
+                            ? null
+                            : () async {
+                                widget._documentID == null
+                                    ? await FirebaseFirestore.instance
+                                        .collection('servers')
+                                        .doc()
+                                        .set({
+                                        'title': widget._title,
+                                        'address': widget._address,
+                                        'port': widget._port,
+                                      })
+                                    : await FirebaseFirestore.instance
+                                        .collection('servers')
+                                        .doc(widget._documentID)
+                                        .update({
+                                        'title': widget._title,
+                                        'address': widget._address,
+                                        'port': widget._port,
+                                      });
+                                Navigator.pop(context, true);
+                              },
                       ),
-                      onPressed:
-                          (!(widget._title != null && widget._title.isNotEmpty) ||
-                                  !(widget._address != null &&
-                                      widget._address.isNotEmpty) ||
-                                  widget._port == null)
-                              ? null
-                              : () async {
-                                  widget._documentID == null
-                                      ? await FirebaseFirestore.instance
-                                          .collection('servers')
-                                          .doc()
-                                          .set({
-                                          'title': widget._title,
-                                          'address': widget._address,
-                                          'port': widget._port,
-                                        })
-                                      : await FirebaseFirestore.instance
-                                          .collection('servers')
-                                          .doc(widget._documentID)
-                                          .update({
-                                          'title': widget._title,
-                                          'address': widget._address,
-                                          'port': widget._port,
-                                        });
-                                  Navigator.pop(context, true);
-                                },
                     ),
-                  ),
                   ),
                   Container(width: 20),
                   Expanded(
@@ -317,6 +317,37 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
                   ),
                 ],
               ),
+              widget._documentID == null
+                  ? SizedBox.shrink()
+                  : Container(height: 20),
+              widget._documentID == null
+                  ? SizedBox.shrink()
+                  : SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        child: Text(
+                          '削除',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              letterSpacing: 5),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: HexColor('625050'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () async {
+                          await FirebaseFirestore.instance
+                              .collection('servers')
+                              .doc(widget._documentID)
+                              .delete();
+                          Navigator.pop(context, true);
+                        },
+                      ),
+                    ),
               Container(height: 60),
             ],
           ),

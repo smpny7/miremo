@@ -39,279 +39,287 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
           ),
         ),
       ),
-      body: Container(
-        margin: EdgeInsets.fromLTRB(30, 20, 30, 0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              child: ServerCardScreen(
-                  widget._title,
-                  widget._address,
-                  widget._port,
-                  widget._documentID,
-                  widget._iconUrl,
-                  null,
-                  null,
-                  false),
-            ),
-            Container(
-              child: Text(
-                '表示名',
-                style: TextStyle(
-                  color: HexColor('D3D3D3'),
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
-                textAlign: TextAlign.left,
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                child: ServerCardScreen(
+                    widget._title,
+                    widget._address,
+                    widget._port,
+                    widget._documentID,
+                    widget._iconUrl,
+                    null,
+                    null,
+                    false),
               ),
-              margin: EdgeInsets.fromLTRB(10, 30, 0, 6),
-              width: double.infinity,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(
-                    color: HexColor('505962'),
+              Container(
+                child: Text(
+                  '表示名',
+                  style: TextStyle(
+                    color: HexColor('D3D3D3'),
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
                   ),
+                  textAlign: TextAlign.left,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(
-                    color: HexColor('505962'),
-                  ),
-                ),
-                filled: true,
-                fillColor: HexColor('505962'),
-                hintText: 'Minecraftサーバー',
-                hintStyle: TextStyle(
-                  color: HexColor('80878E'),
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
-                counterStyle: TextStyle(
-                  color: HexColor('D3D3D3'),
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
+                margin: EdgeInsets.fromLTRB(10, 30, 0, 6),
+                width: double.infinity,
               ),
-              style: TextStyle(
-                color: HexColor('D3D3D3'),
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2,
-              ),
-              initialValue: widget._title ?? '',
-              validator: _requiredValidator(context),
-              maxLength: 12,
-              autofocus: true,
-              textInputAction: TextInputAction.next,
-              onChanged: (String title) =>
-                  setState(() => widget._title = title),
-            ),
-            Container(
-              child: Text(
-                'ホスト名',
-                style: TextStyle(
-                  color: HexColor('D3D3D3'),
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              margin: EdgeInsets.fromLTRB(10, 0, 0, 6),
-              width: double.infinity,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(
-                    color: HexColor('505962'),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(
-                    color: HexColor('505962'),
-                  ),
-                ),
-                filled: true,
-                fillColor: HexColor('505962'),
-                hintText: 'xxxxxx.com, oo.oo.oo.oo',
-                hintStyle: TextStyle(
-                  color: HexColor('80878E'),
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
-                counterStyle: TextStyle(
-                  color: HexColor('D3D3D3'),
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
-              ),
-              style: TextStyle(
-                color: HexColor('D3D3D3'),
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2,
-              ),
-              initialValue: widget._address ?? '',
-              validator: _requiredValidator(context),
-              maxLength: 40,
-              textInputAction: TextInputAction.next,
-              onChanged: (String address) =>
-                  setState(() => widget._address = address),
-            ),
-            Container(
-              child: Text(
-                'ポート番号',
-                style: TextStyle(
-                  color: HexColor('D3D3D3'),
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              margin: EdgeInsets.fromLTRB(10, 0, 0, 6),
-              width: double.infinity,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(
-                    color: HexColor('505962'),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(
-                    color: HexColor('505962'),
-                  ),
-                ),
-                filled: true,
-                fillColor: HexColor('505962'),
-                hintText: '25565',
-                hintStyle: TextStyle(
-                  color: HexColor('80878E'),
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
-                counterStyle: TextStyle(
-                  color: HexColor('D3D3D3'),
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
-              ),
-              style: TextStyle(
-                color: HexColor('D3D3D3'),
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2,
-              ),
-              initialValue: widget._port.toString() ?? '25565',
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              validator: _requiredValidator(context),
-              maxLength: 5,
-              textInputAction: TextInputAction.next,
-              onChanged: (String port) {
-                if (port.isNotEmpty)
-                  setState(() => widget._port = int.parse(port));
-              },
-            ),
-            Container(height: 40),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                SizedBox(
-                  height: 50,
-                  width: 175,
-                  child: ElevatedButton(
-                    child: Text(
-                      widget._documentID == null ? '作成' : '保存',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13,
-                          letterSpacing: 3),
+              TextFormField(
+                decoration: InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide(
+                      color: HexColor('505962'),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      primary: HexColor('76A3D1'),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide(
+                      color: HexColor('505962'),
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: HexColor('505962'),
+                  hintText: 'Minecraftサーバー',
+                  hintStyle: TextStyle(
+                    color: HexColor('80878E'),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                  counterStyle: TextStyle(
+                    color: HexColor('D3D3D3'),
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+                style: TextStyle(
+                  color: HexColor('D3D3D3'),
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
+                ),
+                initialValue: widget._title ?? '',
+                validator: _requiredValidator(context),
+                maxLength: 12,
+                autofocus: true,
+                textInputAction: TextInputAction.next,
+                onChanged: (String title) =>
+                    setState(() => widget._title = title),
+              ),
+              Container(
+                child: Text(
+                  'ホスト名',
+                  style: TextStyle(
+                    color: HexColor('D3D3D3'),
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                margin: EdgeInsets.fromLTRB(10, 0, 0, 6),
+                width: double.infinity,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide(
+                      color: HexColor('505962'),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide(
+                      color: HexColor('505962'),
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: HexColor('505962'),
+                  hintText: 'xxxxxx.com, oo.oo.oo.oo',
+                  hintStyle: TextStyle(
+                    color: HexColor('80878E'),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                  counterStyle: TextStyle(
+                    color: HexColor('D3D3D3'),
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+                style: TextStyle(
+                  color: HexColor('D3D3D3'),
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
+                ),
+                initialValue: widget._address ?? '',
+                validator: _requiredValidator(context),
+                maxLength: 40,
+                textInputAction: TextInputAction.next,
+                onChanged: (String address) =>
+                    setState(() => widget._address = address),
+              ),
+              Container(
+                child: Text(
+                  'ポート番号',
+                  style: TextStyle(
+                    color: HexColor('D3D3D3'),
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                margin: EdgeInsets.fromLTRB(10, 0, 0, 6),
+                width: double.infinity,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide(
+                      color: HexColor('505962'),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide(
+                      color: HexColor('505962'),
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: HexColor('505962'),
+                  hintText: '25565',
+                  hintStyle: TextStyle(
+                    color: HexColor('80878E'),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                  counterStyle: TextStyle(
+                    color: HexColor('D3D3D3'),
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+                style: TextStyle(
+                  color: HexColor('D3D3D3'),
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
+                ),
+                initialValue: widget._port.toString() ?? '25565',
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                validator: _requiredValidator(context),
+                maxLength: 5,
+                textInputAction: TextInputAction.next,
+                onChanged: (String port) {
+                  if (port.isNotEmpty)
+                    setState(() => widget._port = int.parse(port));
+                },
+              ),
+              Container(height: 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: SizedBox(
+                    height: 50,
+                    width: 140,
+                    child: ElevatedButton(
+                      child: Text(
+                        widget._documentID == null ? '作成' : '保存',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            letterSpacing: 3),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: HexColor('76A3D1'),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed:
+                          (!(widget._title != null && widget._title.isNotEmpty) ||
+                                  !(widget._address != null &&
+                                      widget._address.isNotEmpty) ||
+                                  widget._port == null)
+                              ? null
+                              : () async {
+                                  widget._documentID == null
+                                      ? await FirebaseFirestore.instance
+                                          .collection('servers')
+                                          .doc()
+                                          .set({
+                                          'title': widget._title,
+                                          'address': widget._address,
+                                          'port': widget._port,
+                                        })
+                                      : await FirebaseFirestore.instance
+                                          .collection('servers')
+                                          .doc(widget._documentID)
+                                          .update({
+                                          'title': widget._title,
+                                          'address': widget._address,
+                                          'port': widget._port,
+                                        });
+                                  Navigator.pop(context, true);
+                                },
+                    ),
+                  ),
+                  ),
+                  Container(width: 20),
+                  Expanded(
+                    child: SizedBox(
+                      height: 50,
+                      width: 140,
+                      child: ElevatedButton(
+                        child: Text(
+                          'キャンセル',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              letterSpacing: 3),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: HexColor('505962'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context, false);
+                        },
                       ),
                     ),
-                    onPressed:
-                        (!(widget._title != null && widget._title.isNotEmpty) ||
-                                !(widget._address != null &&
-                                    widget._address.isNotEmpty) ||
-                                widget._port == null)
-                            ? null
-                            : () async {
-                                widget._documentID == null
-                                    ? await FirebaseFirestore.instance
-                                        .collection('servers')
-                                        .doc()
-                                        .set({
-                                        'title': widget._title,
-                                        'address': widget._address,
-                                        'port': widget._port,
-                                      })
-                                    : await FirebaseFirestore.instance
-                                        .collection('servers')
-                                        .doc(widget._documentID)
-                                        .update({
-                                        'title': widget._title,
-                                        'address': widget._address,
-                                        'port': widget._port,
-                                      });
-                                Navigator.pop(context, true);
-                              },
                   ),
-                ),
-                SizedBox(
-                  height: 50,
-                  width: 175,
-                  child: ElevatedButton(
-                    child: Text(
-                      'キャンセル',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13,
-                          letterSpacing: 3),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: HexColor('505962'),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context, false);
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+              Container(height: 60),
+            ],
+          ),
         ),
       ),
     );

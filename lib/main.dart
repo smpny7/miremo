@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
             automaticallyImplyLeading: false,
             backgroundColor: Color(0xFF343A40),
             elevation: 0,
-            toolbarHeight: 80,
+            toolbarHeight: 70,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
@@ -67,17 +67,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           body: Center(
             child: Container(
-              margin: EdgeInsets.fromLTRB(30, 50, 30, 0),
+              margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
               child: Consumer<MainModel>(
                 builder: (context, model, child) {
                   final serverList = model.serverList;
                   return RefreshIndicator(
                     backgroundColor: HexColor('505962'),
                     color: HexColor('76A3D1'),
-                    onRefresh: () async {
-                      Provider.of<MainModel>(context, listen: false)
-                          .getServers();
-                    },
+                    onRefresh: () async =>
+                        Provider.of<MainModel>(context, listen: false)
+                            .getServers(),
                     child: ListView(
                       physics: AlwaysScrollableScrollPhysics(),
                       children: <Widget>[
@@ -104,50 +103,54 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            SizedBox(
-                              height: 50,
-                              width: 175,
-                              child: ElevatedButton(
-                                child: Text(
-                                  'サーバーを追加',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13,
-                                      letterSpacing: 2),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: HexColor('76A3D1'),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                            Expanded(
+                              child: SizedBox(
+                                height: 50,
+                                child: ElevatedButton(
+                                  child: Text(
+                                    'サーバーを追加',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                        letterSpacing: 2),
                                   ),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: HexColor('76A3D1'),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: _isEditable
+                                      ? null
+                                      : () => showRegisterModal(context),
                                 ),
-                                onPressed: _isEditable
-                                    ? null
-                                    : () => showRegisterModal(context),
                               ),
                             ),
-                            SizedBox(
-                              height: 50,
-                              width: 175,
-                              child: ElevatedButton(
-                                child: Text(
-                                  _isEditable ? 'キャンセル' : '編集',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13,
-                                      letterSpacing: 3),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: HexColor('505962'),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                            Container(width: 20),
+                            Expanded(
+                              child: SizedBox(
+                                height: 50,
+                                child: ElevatedButton(
+                                  child: Text(
+                                    _isEditable ? 'キャンセル' : '編集',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                        letterSpacing: 3),
                                   ),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: HexColor('505962'),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: () => _toggleEditable(),
                                 ),
-                                onPressed: () => _toggleEditable(),
                               ),
                             ),
                           ],
                         ),
+                        Container(height: 60),
                       ],
                     ),
                   );
@@ -170,6 +173,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
 
-    if (result) Provider.of<MainModel>(context, listen: false).getServers();
+    if (result != null) Provider.of<MainModel>(context, listen: false).getServers();
   }
 }

@@ -41,6 +41,7 @@ class _ServerCardScreenState extends State<ServerCardScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               ListTile(
+                contentPadding: EdgeInsets.fromLTRB(3, 0, 3, 0),
                 leading: Container(
                   height: 60,
                   width: 60,
@@ -102,6 +103,6 @@ class _ServerCardScreenState extends State<ServerCardScreen> {
       ),
     );
 
-    if (result) Provider.of<MainModel>(context, listen: false).getServers();
+    if (result != null) Provider.of<MainModel>(context, listen: false).getServers();
   }
 }

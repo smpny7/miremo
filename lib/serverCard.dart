@@ -1,14 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:miremo/registerModal.dart';
+import 'package:provider/provider.dart';
 
-class ServerCard extends StatelessWidget {
+import 'main_model.dart';
+
+class ServerCardScreen extends StatefulWidget {
   final String _title;
+  final String _address;
+  final int _port;
+  final String _documentID;
   final String _iconUrl;
   final int _onlineMembers;
   final int _capacityMembers;
+  bool _isEditable;
 
-  ServerCard(
-      this._title, this._iconUrl, this._onlineMembers, this._capacityMembers);
+  ServerCardScreen(
+      this._title,
+      this._address,
+      this._port,
+      this._documentID,
+      this._iconUrl,
+      this._onlineMembers,
+      this._capacityMembers,
+      this._isEditable);
 
+  @override
+  _ServerCardScreenState createState() => _ServerCardScreenState();
+}
+
+class _ServerCardScreenState extends State<ServerCardScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,14 +47,14 @@ class ServerCard extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: FittedBox(
-                      child: _iconUrl != null
-                          ? Image.network(_iconUrl, fit: BoxFit.contain)
+                      child: widget._iconUrl != null
+                          ? Image.network(widget._iconUrl, fit: BoxFit.contain)
                           : Image.asset('assets/default.jpg'),
                     ),
                   ),
                 ),
                 title: Text(
-                  _title ?? 'Minecraftサーバー',
+                  widget._title ?? 'Minecraftサーバー',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -42,18 +62,22 @@ class ServerCard extends StatelessWidget {
                       letterSpacing: 2),
                 ),
                 subtitle: Text(
-                  'オンライン: ${_onlineMembers ?? '-'} / ${_capacityMembers ?? '-'}',
+                  'オンライン: ${widget._onlineMembers ?? '-'} / ${widget._capacityMembers ?? '-'}',
                   style: TextStyle(
                       color: Color(0xFFD3D3D3),
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 2),
                 ),
-                // trailing: IconButton(
-                //     color: Colors.white70,
-                //     icon: _iconUrl != null ? Icon(EnterIcon.enter) : Icon(null),
-                //     onPressed: () {},
-                //     iconSize: 34),
+                trailing: widget._isEditable
+                    ? IconButton(
+                        color: Colors.white70,
+                        icon: Icon(Icons.edit),
+                        onPressed: widget._isEditable
+                            ? () => showEditModal(context)
+                            : null,
+                        iconSize: 20)
+                    : SizedBox.shrink(),
               ),
             ],
           ),
@@ -66,5 +90,18 @@ class ServerCard extends StatelessWidget {
         onPressed: () {},
       ),
     );
+  }
+
+  void showEditModal(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      new MaterialPageRoute<bool>(
+        builder: (BuildContext context) => RegisterModalScreen(widget._title,
+            widget._address, widget._port, widget._documentID, widget._iconUrl),
+        fullscreenDialog: true,
+      ),
+    );
+
+    if (result) Provider.of<MainModel>(context, listen: false).getServers();
   }
 }

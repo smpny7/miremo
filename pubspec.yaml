@@ -79,11 +79,6 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 
-  fonts:
-    - family: EnterIcon
-      fonts:
-        - asset: fonts/EnterIcon.ttf
-
 flutter_native_splash:
   image: "assets/splash.png"
   color: "#343A40"

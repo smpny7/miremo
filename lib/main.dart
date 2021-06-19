@@ -19,6 +19,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool _isEditable = false;
+
+  void _toggleEditable() => setState(() => _isEditable = !_isEditable);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -81,11 +85,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: <Widget>[
                             ListView(
                               children: serverList
-                                  .map((server) => ServerCard(
+                                  .map((server) => ServerCardScreen(
                                       server.title,
+                                      server.address,
+                                      server.port,
+                                      server.documentID,
                                       server.iconUrl,
                                       server.onlineMembers,
-                                      server.capacityMembers))
+                                      server.capacityMembers,
+                                      _isEditable))
                                   .toList(),
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
@@ -113,9 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
-                                onPressed: () {
-                                  pushWithReloadByReturn(context);
-                                },
+                                onPressed: _isEditable
+                                    ? null
+                                    : () => showRegisterModal(context),
                               ),
                             ),
                             SizedBox(
@@ -123,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 175,
                               child: ElevatedButton(
                                 child: Text(
-                                  '編集',
+                                  _isEditable ? 'キャンセル' : '編集',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
@@ -135,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () => _toggleEditable(),
                               ),
                             ),
                           ],
@@ -152,11 +160,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void pushWithReloadByReturn(BuildContext context) async {
+  void showRegisterModal(BuildContext context) async {
     final result = await Navigator.push(
       context,
       new MaterialPageRoute<bool>(
-        builder: (BuildContext context) => RegisterModalScreen(),
+        builder: (BuildContext context) =>
+            RegisterModalScreen(null, null, 25565, null, null),
         fullscreenDialog: true,
       ),
     );

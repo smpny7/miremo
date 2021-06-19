@@ -30,9 +30,13 @@ class MainModel extends ChangeNotifier {
     return jsonResponse['success']
         ? Server(
             doc.data()['title'],
+            doc.data()['address'],
+            doc.data()['port'],
+            doc.id,
             '${firebaseUri}icon/server?host=${doc.data()['address']}&port=${doc.data()['port']}',
             jsonResponse['data']['players']['online'],
             jsonResponse['data']['players']['max'])
-        : Server(doc.data()['title'], null, null, null);
+        : Server(doc.data()['title'], doc.data()['address'], doc.data()['port'],
+            doc.id, null, null, null);
   }
 }

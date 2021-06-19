@@ -7,15 +7,20 @@ import 'package:miremo/serverCard.dart';
 import 'hexColor.dart';
 
 class RegisterModalScreen extends StatefulWidget {
+  String _title;
+  String _address;
+  int _port;
+  String _documentID;
+  String _iconUrl;
+
+  RegisterModalScreen(
+      this._title, this._address, this._port, this._documentID, this._iconUrl);
+
   @override
   _RegisterModalScreenState createState() => _RegisterModalScreenState();
 }
 
 class _RegisterModalScreenState extends State<RegisterModalScreen> {
-  String _title;
-  String _address;
-  int _port = 25565;
-
   FormFieldValidator _requiredValidator(BuildContext context) =>
       (val) => val.isEmpty ? "必須" : null;
 
@@ -26,7 +31,7 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
         backgroundColor: Color(0xFF343A40),
         elevation: 0,
         title: Text(
-          'サーバーを追加',
+          widget._documentID == null ? 'サーバーを追加' : 'サーバーを編集',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -39,7 +44,15 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
         child: Column(
           children: <Widget>[
             Container(
-              child: ServerCard(_title, null, null, null),
+              child: ServerCardScreen(
+                  widget._title,
+                  widget._address,
+                  widget._port,
+                  widget._documentID,
+                  widget._iconUrl,
+                  null,
+                  null,
+                  false),
             ),
             Container(
               child: Text(
@@ -93,11 +106,13 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
                 fontWeight: FontWeight.bold,
                 letterSpacing: 2,
               ),
+              initialValue: widget._title ?? '',
               validator: _requiredValidator(context),
               maxLength: 12,
               autofocus: true,
               textInputAction: TextInputAction.next,
-              onChanged: (String title) => setState(() => _title = title),
+              onChanged: (String title) =>
+                  setState(() => widget._title = title),
             ),
             Container(
               child: Text(
@@ -151,10 +166,12 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
                 fontWeight: FontWeight.bold,
                 letterSpacing: 2,
               ),
+              initialValue: widget._address ?? '',
               validator: _requiredValidator(context),
               maxLength: 40,
               textInputAction: TextInputAction.next,
-              onChanged: (String address) => setState(() => _address = address),
+              onChanged: (String address) =>
+                  setState(() => widget._address = address),
             ),
             Container(
               child: Text(
@@ -208,7 +225,7 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
                 fontWeight: FontWeight.bold,
                 letterSpacing: 2,
               ),
-              initialValue: '25565',
+              initialValue: widget._port.toString() ?? '25565',
               keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.digitsOnly
@@ -217,7 +234,8 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
               maxLength: 5,
               textInputAction: TextInputAction.next,
               onChanged: (String port) {
-                if (port.isNotEmpty) setState(() => _port = int.parse(port));
+                if (port.isNotEmpty)
+                  setState(() => widget._port = int.parse(port));
               },
             ),
             Container(height: 40),
@@ -229,7 +247,7 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
                   width: 175,
                   child: ElevatedButton(
                     child: Text(
-                      '作成',
+                      widget._documentID == null ? '作成' : '保存',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
@@ -241,21 +259,32 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: (!(_title != null && _title.isNotEmpty) ||
-                            !(_address != null && _address.isNotEmpty) ||
-                            _port == null)
-                        ? null
-                        : () async {
-                            await FirebaseFirestore.instance
-                                .collection('servers')
-                                .doc()
-                                .set({
-                              'title': _title,
-                              'address': _address,
-                              'port': _port,
-                            });
-                            Navigator.pop(context, true);
-                          },
+                    onPressed:
+                        (!(widget._title != null && widget._title.isNotEmpty) ||
+                                !(widget._address != null &&
+                                    widget._address.isNotEmpty) ||
+                                widget._port == null)
+                            ? null
+                            : () async {
+                                widget._documentID == null
+                                    ? await FirebaseFirestore.instance
+                                        .collection('servers')
+                                        .doc()
+                                        .set({
+                                        'title': widget._title,
+                                        'address': widget._address,
+                                        'port': widget._port,
+                                      })
+                                    : await FirebaseFirestore.instance
+                                        .collection('servers')
+                                        .doc(widget._documentID)
+                                        .update({
+                                        'title': widget._title,
+                                        'address': widget._address,
+                                        'port': widget._port,
+                                      });
+                                Navigator.pop(context, true);
+                              },
                   ),
                 ),
                 SizedBox(

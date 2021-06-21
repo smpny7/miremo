@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_view.dart';
@@ -15,8 +16,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _auth.authStateChanges().listen((User user) {
-      if (user != null) Navigator.pushReplacementNamed(context, '/home');
+    _auth.authStateChanges().listen((User user) async {
+      if (user != null) await loggedInScreenTransition();
     });
   }
 
@@ -34,8 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.authStateChanges().listen((User user) {
-      if (user != null) Navigator.pushReplacementNamed(context, '/home');
+    FirebaseAuth.instance.authStateChanges().listen((User user) async {
+      if (user != null) await loggedInScreenTransition();
     });
     return Scaffold(
       body: Center(
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () async {
                 try {
                   await signInWithGoogle();
-                  Navigator.pushReplacementNamed(context, '/home');
+                  await loggedInScreenTransition();
                 } on FirebaseAuthException catch (e) {
                   print('FirebaseAuthException');
                   print('${e.code}');
@@ -72,5 +73,17 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> loggedInScreenTransition() async {
+    final doc = await FirebaseFirestore.instance
+        .collection('members')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .get();
+
+    if (doc.data() != null)
+      Navigator.pushReplacementNamed(context, '/home');
+    else
+      Navigator.pushReplacementNamed(context, '/register');
   }
 }

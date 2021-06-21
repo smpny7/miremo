@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:miremo/main_model.dart';
+import 'package:miremo/register.dart';
 import 'package:miremo/registerModal.dart';
 import 'package:miremo/serverCard.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +23,7 @@ void main() async {
     routes: <String, WidgetBuilder>{
       // '/': (_) => new Splash(),
       '/login': (_) => new LoginScreen(),
+      '/register': (_) => new RegisterScreen(),
       '/home': (_) => new HomeScreen(),
     },
   ));
@@ -33,10 +36,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _isEditable = false;
-  User firebaseUser;
+  String minecraftId = '';
+
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   void _toggleEditable() => setState(() => _isEditable = !_isEditable);
+
+  void getMinecraftId() async {
+    final doc = await FirebaseFirestore.instance
+        .collection('members')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .get();
+    setState(() => this.minecraftId = doc.data()['minecraftId']);
+  }
 
   Future<void> signOut(context) async {
     await FirebaseAuth.instance.signOut();
@@ -51,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    firebaseUser = FirebaseAuth.instance.currentUser;
+    getMinecraftId();
   }
 
   @override
@@ -69,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
                 child: Text(
-                  'kit130101',
+                  minecraftId,
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -84,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(8),
                   child: FittedBox(
                     child: Image.network(
-                        'https://us-central1-miremo.cloudfunctions.net/app/icon/player?minecraft_id=kit130101',
+                        'https://us-central1-miremo.cloudfunctions.net/app/icon/player?minecraft_id=$minecraftId',
                         fit: BoxFit.contain),
                   ),
                 ),

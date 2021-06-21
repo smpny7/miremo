@@ -36,6 +36,8 @@ dependencies:
   flutter_native_splash: ^1.1.7+1
   provider: ^5.0.0
   http: ^0.13.1
+  webview_flutter: ^2.0.8
+  flutter_email_sender: ^5.0.0
 
 dev_dependencies:
   flutter_test:

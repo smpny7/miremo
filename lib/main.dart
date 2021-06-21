@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:miremo/main_model.dart';
+import 'package:miremo/privacyPolicy.dart';
 import 'package:miremo/register.dart';
 import 'package:miremo/registerModal.dart';
 import 'package:miremo/serverCard.dart';
@@ -15,7 +17,6 @@ import 'login.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // runApp(LoginScreen());
   runApp(new MaterialApp(
     title: 'miremo',
     theme: ThemeData(scaffoldBackgroundColor: const Color(0xFF343A40)),
@@ -25,6 +26,7 @@ void main() async {
       '/login': (_) => new LoginScreen(),
       '/register': (_) => new RegisterScreen(),
       '/home': (_) => new HomeScreen(),
+      '/privacyPolicy': (_) => new PrivacyPolicyScreen(),
     },
   ));
 }
@@ -48,6 +50,11 @@ class _HomeScreenState extends State<HomeScreen> {
         .doc(FirebaseAuth.instance.currentUser.uid)
         .get();
     setState(() => this.minecraftId = doc.data()['minecraftId']);
+  }
+
+  void flutterEmailSenderMail() async {
+    final Email email = Email(recipients: ['developer.ikep@gmail.com']);
+    await FlutterEmailSender.send(email);
   }
 
   Future<void> signOut(context) async {
@@ -251,7 +258,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          onPressed: () => {},
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PrivacyPolicyScreen(),
+                            ),
+                          ),
                         ),
                       ),
                       Container(height: 10),
@@ -272,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () => flutterEmailSenderMail(),
                         ),
                       ),
                       Container(height: 10),

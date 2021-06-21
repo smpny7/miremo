@@ -32,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
         create: (_) => MainModel()..getServers(),
         child: Scaffold(
           appBar: AppBar(
-            automaticallyImplyLeading: false,
             backgroundColor: Color(0xFF343A40),
             elevation: 0,
             toolbarHeight: 70,

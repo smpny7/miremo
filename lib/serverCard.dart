@@ -95,7 +95,11 @@ class _ServerCardScreenState extends State<ServerCardScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => DetailScreen(
-                        widget._title, widget._address, widget._port)));
+                        widget._title,
+                        widget._address,
+                        widget._port,
+                        widget._iconUrl,
+                        widget._capacityMembers)));
         },
       ),
     );

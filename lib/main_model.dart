@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:miremo/server.dart';
@@ -9,8 +10,11 @@ class MainModel extends ChangeNotifier {
   List<Server> serverList = [];
 
   Future getServers() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('servers').get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('members')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection('servers')
+        .get();
     final docs = snapshot.docs;
 
     final serverList =

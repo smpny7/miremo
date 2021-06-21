@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -110,7 +111,6 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
                 initialValue: widget._title ?? '',
                 validator: _requiredValidator(context),
                 maxLength: 12,
-                autofocus: true,
                 textInputAction: TextInputAction.next,
                 onChanged: (String title) =>
                     setState(() => widget._title = title),
@@ -270,6 +270,9 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
                             : () async {
                                 widget._documentID == null
                                     ? await FirebaseFirestore.instance
+                                        .collection('members')
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser.uid)
                                         .collection('servers')
                                         .doc()
                                         .set({
@@ -278,6 +281,9 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
                                         'port': widget._port,
                                       })
                                     : await FirebaseFirestore.instance
+                                        .collection('members')
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser.uid)
                                         .collection('servers')
                                         .doc(widget._documentID)
                                         .update({
@@ -341,6 +347,8 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
                         ),
                         onPressed: () async {
                           await FirebaseFirestore.instance
+                              .collection('members')
+                              .doc(FirebaseAuth.instance.currentUser.uid)
                               .collection('servers')
                               .doc(widget._documentID)
                               .delete();

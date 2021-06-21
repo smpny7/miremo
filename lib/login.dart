@@ -38,15 +38,21 @@ class _LoginScreenState extends State<LoginScreen> {
       if (user != null) Navigator.pushReplacementNamed(context, '/home');
     });
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Google Sign-In Demo',
-        ),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(height: 70),
+            SizedBox(
+              width: 150,
+              child: Image.asset('assets/splash.png'),
+            ),
+            Container(height: 60),
+            SignInButton(
+              Buttons.Apple,
+              onPressed: () {},
+            ),
+            Container(height: 10),
             SignInButton(
               Buttons.Google,
               onPressed: () async {

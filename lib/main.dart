@@ -119,77 +119,163 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListView(
                     physics: AlwaysScrollableScrollPhysics(),
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          ListView(
-                            children: serverList
-                                .map((server) => ServerCardScreen(
-                                    server.title,
-                                    server.address,
-                                    server.port,
-                                    server.documentID,
-                                    server.iconUrl,
-                                    server.onlineMembers,
-                                    server.capacityMembers,
-                                    _isEditable))
-                                .toList(),
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                          ),
-                        ],
-                      ),
+                      serverList.length > 0
+                          ? Column(
+                              children: <Widget>[
+                                ListView(
+                                  children: serverList
+                                      .map((server) => ServerCardScreen(
+                                          server.title,
+                                          server.address,
+                                          server.port,
+                                          server.documentID,
+                                          server.iconUrl,
+                                          server.onlineMembers,
+                                          server.capacityMembers,
+                                          _isEditable))
+                                      .toList(),
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                ),
+                              ],
+                            )
+                          : Container(
+                              margin: EdgeInsets.only(top: 30),
+                              child: ElevatedButton(
+                                child: Container(
+                                  height: 95,
+                                  child: ListTile(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(5, 20, 5, 0),
+                                    title: Text(
+                                      '新規サーバーを追加',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 2),
+                                    ),
+                                    trailing: Container(
+                                      height: 60,
+                                      width: 60,
+                                      child: Image.asset('assets/server.png'),
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: HexColor('7AA5D2'),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () => showRegisterModal(context),
+                              ),
+                            ),
                       Container(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            child: SizedBox(
-                              height: 50,
-                              child: ElevatedButton(
-                                child: Text(
-                                  'サーバーを追加',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13,
-                                      letterSpacing: 2),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: HexColor('76A3D1'),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                      serverList.length > 0
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Expanded(
+                                  child: SizedBox(
+                                    height: 50,
+                                    child: ElevatedButton(
+                                      child: Text(
+                                        'サーバーを追加',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13,
+                                            letterSpacing: 2),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: HexColor('76A3D1'),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      onPressed: _isEditable
+                                          ? null
+                                          : () => showRegisterModal(context),
+                                    ),
                                   ),
                                 ),
-                                onPressed: _isEditable
-                                    ? null
-                                    : () => showRegisterModal(context),
-                              ),
-                            ),
-                          ),
-                          Container(width: 20),
-                          Expanded(
-                            child: SizedBox(
-                              height: 50,
-                              child: ElevatedButton(
-                                child: Text(
-                                  _isEditable ? 'キャンセル' : '編集',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13,
-                                      letterSpacing: 3),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: HexColor('505962'),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                Container(width: 20),
+                                Expanded(
+                                  child: SizedBox(
+                                    height: 50,
+                                    child: ElevatedButton(
+                                      child: Text(
+                                        _isEditable ? 'キャンセル' : '編集',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13,
+                                            letterSpacing: 3),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: HexColor('505962'),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      onPressed: () => _toggleEditable(),
+                                    ),
                                   ),
                                 ),
-                                onPressed: () => _toggleEditable(),
-                              ),
+                              ],
+                            )
+                          : SizedBox.shrink(),
+                      Container(height: 60),
+                      SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          child: Text(
+                            'プライバシーポリシー',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                letterSpacing: 5),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: HexColor('505962'),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                        ],
+                          onPressed: () => {},
+                        ),
                       ),
-                      Container(height: 20),
+                      Container(height: 10),
+                      SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          child: Text(
+                            'お問い合わせ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                letterSpacing: 5),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: HexColor('505962'),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {},
+                        ),
+                      ),
+                      Container(height: 10),
                       SizedBox(
                         height: 50,
                         width: double.infinity,

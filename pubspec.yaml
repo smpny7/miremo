@@ -56,6 +56,7 @@ flutter:
   assets:
     - assets/default.jpg
     - assets/player.png
+    - assets/server.png
     - assets/splash.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

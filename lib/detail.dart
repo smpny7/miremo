@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +22,22 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+  String minecraftId = '';
+
+  void getMinecraftId() async {
+    final doc = await FirebaseFirestore.instance
+        .collection('members')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .get();
+    setState(() => this.minecraftId = doc.data()['minecraftId']);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMinecraftId();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,7 +61,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
                   child: Text(
-                    'kit130101',
+                    minecraftId,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -58,7 +76,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     borderRadius: BorderRadius.circular(8),
                     child: FittedBox(
                       child: Image.network(
-                          'https://us-central1-miremo.cloudfunctions.net/app/icon/player?minecraft_id=kit130101',
+                          'https://us-central1-miremo.cloudfunctions.net/app/icon/player?minecraft_id=$minecraftId',
                           fit: BoxFit.contain),
                     ),
                   ),
@@ -161,7 +179,8 @@ class _DetailScreenState extends State<DetailScreen> {
                                         ),
                                         Container(height: 10),
                                         Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 30),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 30),
                                           child: Text(
                                             'オンラインメンバーがいないか\nサーバーから情報が提供されて\nいない可能性があります。',
                                             textAlign: TextAlign.center,

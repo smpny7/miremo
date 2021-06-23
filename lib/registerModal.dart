@@ -29,7 +29,7 @@ class _RegisterModalScreenState extends State<RegisterModalScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF343A40),
+        backgroundColor: HexColor('343A40'),
         elevation: 0,
         title: Text(
           widget._documentID == null ? 'サーバーを追加' : 'サーバーを編集',

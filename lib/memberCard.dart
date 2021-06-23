@@ -27,7 +27,11 @@ class MemberCardScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: FittedBox(
-                      child: Image.network(_iconUrl, fit: BoxFit.contain),
+                      child: Image.network(
+                        _iconUrl,
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.none,
+                      ),
                     ),
                   ),
                 ),

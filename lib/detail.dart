@@ -42,13 +42,13 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'miremo',
-      theme: ThemeData(scaffoldBackgroundColor: const Color(0xFF343A40)),
+      theme: ThemeData(scaffoldBackgroundColor: HexColor('343A40')),
       home: ChangeNotifierProvider<DetailModel>(
         create: (_) => DetailModel()
           ..getOnlinePlayers(widget._title, widget._address, widget._port),
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Color(0xFF343A40),
+            backgroundColor: HexColor('343A40'),
             elevation: 0,
             toolbarHeight: 70,
             leading: IconButton(

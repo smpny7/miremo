@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import 'hexColor.dart';
+
 class PrivacyPolicyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF343A40),
+        backgroundColor: HexColor('343A40'),
         elevation: 0,
         toolbarHeight: 70,
         leading: IconButton(

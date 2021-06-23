@@ -19,7 +19,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(new MaterialApp(
     title: 'miremo',
-    theme: ThemeData(scaffoldBackgroundColor: const Color(0xFF343A40)),
+    theme: ThemeData(scaffoldBackgroundColor: HexColor('343A40')),
     home: LoginScreen(),
     routes: <String, WidgetBuilder>{
       // '/': (_) => new Splash(),
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (_) => MainModel()..getServers(),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF343A40),
+          backgroundColor: HexColor('343A40'),
           elevation: 0,
           toolbarHeight: 70,
           title: Row(

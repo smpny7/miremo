@@ -45,8 +45,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           'https://us-central1-miremo.cloudfunctions.net/app/icon/player?minecraft_id=$minecraftId',
                           errorBuilder: (BuildContext context, Object exception,
                               StackTrace stackTrace) {
-                          return Image.asset('assets/player.png');
-                        }, fit: BoxFit.contain),
+                            return Image.asset('assets/player.png');
+                          },
+                          fit: BoxFit.contain,
+                          filterQuality: FilterQuality.none,
+                        ),
                 ),
               ),
             ),
@@ -147,13 +150,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: isContinuable ? () async {
-                    await FirebaseFirestore.instance
-                        .collection('members')
-                        .doc(FirebaseAuth.instance.currentUser.uid)
-                        .set({'minecraftId': minecraftId});
-                    Navigator.pushReplacementNamed(context, '/home');
-                  } : null,
+                  onPressed: isContinuable
+                      ? () async {
+                          await FirebaseFirestore.instance
+                              .collection('members')
+                              .doc(FirebaseAuth.instance.currentUser.uid)
+                              .set({'minecraftId': minecraftId});
+                          Navigator.pushReplacementNamed(context, '/home');
+                        }
+                      : null,
                 ),
               ),
             ),

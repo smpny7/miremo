@@ -21,6 +21,7 @@ void main() async {
     title: 'miremo',
     theme: ThemeData(scaffoldBackgroundColor: HexColor('343A40')),
     home: LoginScreen(),
+    debugShowCheckedModeBanner: false,
     routes: <String, WidgetBuilder>{
       // '/': (_) => new Splash(),
       '/login': (_) => new LoginScreen(),

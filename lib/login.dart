@@ -26,6 +26,8 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  Future<UserCredential> signInAnonymously() => _auth.signInAnonymously();
+
   Future<UserCredential> signInWithGoogle() async {
     final googleUser = await GoogleSignIn(scopes: [
       'email',
@@ -35,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    return FirebaseAuth.instance.signInWithCredential(credential);
+    return _auth.signInWithCredential(credential);
   }
 
   @override
@@ -75,6 +77,23 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () async {
                 try {
                   await signInWithGoogle();
+                  await loggedInScreenTransition();
+                } on FirebaseAuthException catch (e) {
+                  print('FirebaseAuthException');
+                  print('${e.code}');
+                } on Exception catch (e) {
+                  print('Exception');
+                  print('${e.toString()}');
+                }
+              },
+            ),
+            Container(height: 10),
+            TextButton(
+              child: const Text('ログインなしで使用する'),
+              style: TextButton.styleFrom(primary: Colors.white38),
+              onPressed: () async {
+                try {
+                  signInAnonymously();
                   await loggedInScreenTransition();
                 } on FirebaseAuthException catch (e) {
                   print('FirebaseAuthException');
